@@ -13,7 +13,7 @@ function BannerBottomCard() {
       <div className="single-item banner-bottom-card flex justify-center">
         <div className="card">
         <div className='cardImage'>
-        <Image src={Card2}/>
+        <Image src={Card2} alt='img'/>
         </div>
         <div className="card__content p-5">
             {/* <p className="card__title">Card Title</p> */}
@@ -28,7 +28,7 @@ function BannerBottomCard() {
         <div className="single-item banner-bottom-card flex justify-center">
         <div className="card">
         <div className='cardImage'>
-        <Image src={Card4}/>
+        <Image src={Card4} alt='img'/>
         </div>
         <div className="card__content p-5">
             {/* <p className="card__title">Card Title</p> */}
@@ -44,7 +44,7 @@ function BannerBottomCard() {
         <div className="single-item banner-bottom-card flex justify-center">
         <div className="card">
         <div className='cardImage'>
-        <Image src={Card3}/>
+        <Image src={Card3} alt='img'/>
         </div>
         <div className="card__content p-5">
             {/* <p className="card__title">Card Title</p> */}
@@ -59,7 +59,7 @@ function BannerBottomCard() {
         <div className="single-item banner-bottom-card flex justify-center">
         <div className="card">
         <div className='cardImage'>
-        <Image src={Card1} />
+        <Image src={Card1} alt='img'/>
         </div>
         <div className="card__content p-5">
             {/* <p className="card__title">Card Title</p> */}

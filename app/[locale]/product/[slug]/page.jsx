@@ -7,6 +7,57 @@ import RelatedRecipes from "../../../_components/Product/RelatedRecipes";
 import ProductCart from "../../../_components/Product/ProductCart";
 import getProduct from "../../../_lib/product/getProduct"
 
+
+// ISR: Regenerate every 60 seconds
+// export const revalidate = 60; 
+
+// ----- SSG: Build pages for each product + each locale -----
+
+// export async function generateStaticParams() {
+//   const baseUrl = "https://api-shutkiz.beemartbd.com";
+
+//   // 1. Fetch all products
+//   const res = await fetch(`${baseUrl}/api/products`);
+//   const products = await res.text();
+//   console.log("Products fetched for SSG:", products);
+
+//   // 2. Locales you support
+//   const locales = ['en', 'bn'];
+
+//   // 3. Generate /en/product/slug + /bn/product/slug
+//   const paths = [];
+
+//   products.forEach((p) => {
+//     locales.forEach((locale) => {
+//       paths.push({
+//         locale,
+//         slug: p.slug
+//       });
+//     });
+//   });
+
+//   return paths;
+// }
+
+
+// ----- SEO Metadata ----- || canonical and hreflang tags
+
+export async function generateMetadata({ params }) {
+  const { slug } = params;
+  const baseUrl = 'https://www.shutkiz.com';
+
+  return {
+    alternates: {
+      canonical: `${baseUrl}/product/${slug}`,
+      languages: {
+        en: `${baseUrl}/en/product/${slug}`,
+        bn: `${baseUrl}/bn/product/${slug}`,
+      },
+    }
+  };
+}
+
+
 async function SingleProduct({params}) {
     const {slug} = params;
     let mainProduct = await getProduct(slug);

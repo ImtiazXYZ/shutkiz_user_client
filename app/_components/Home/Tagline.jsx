@@ -10,10 +10,10 @@ function Tagline() {
       <p>শুটকিজ – নিরাপদ শুঁটকি থেকেও বেশী কিছু </p>
       </div>
       <div className="hidden md:block bg-white p-4 absolute left-10 top-1/2 transform -translate-y-1/2 rounded-full shadow-[0_8px_30px_rgb(0,0,0,0.12)]">
-        <Image src={DryFishIcon} className="w-[50px] h-[50px]"/>
+        <Image src={DryFishIcon} alt="" className="w-[50px] h-[50px]"/>
       </div>
       <div className="hidden md:block bg-white p-4 absolute right-10 top-1/2 transform -translate-y-1/2 rounded-full shadow-[0_8px_30px_rgb(0,0,0,0.12)]">
-        <Image src={DryFishIcon3} className="w-[50px] h-[50px]"/>
+        <Image src={DryFishIcon3} alt="" className="w-[50px] h-[50px]"/>
       </div>
       </div>
       

@@ -97,5 +97,12 @@
     "Buttons": {
       "readMore": "Read more"
     }
+  },
+  "NotFound": {
+    "title": "404",
+    "heading": "Page Not Found",
+    "description": "Oops! The page you're looking for doesn't exist. It might have been moved, deleted, or the URL might be incorrect.",
+    "button": "Go Back Home",
+    "productsTitle": "Explore Our Products"
   }
 }
