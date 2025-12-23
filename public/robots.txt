@@ -2,6 +2,12 @@
 User-agent: *
 Allow: /
 
+# Block specific junk parameters from WordPress/WooCommerce leftovers
+Disallow: /*?add_to_wishlist=
+Disallow: /*?_wpnonce=
+Disallow: /*&add_to_wishlist=
+Disallow: /*&_wpnonce=
+
 # Host
 Host: https://www.shutkiz.com
 
