@@ -9,6 +9,7 @@ import AllProductSlider from '../Home/AllProductSlider';
 import orderConfrimImage from '../../../public/order-confirm.gif';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
+import Navbar from '../Navbar';
 function OrderConfirm() {
 
   const router = useRouter();
@@ -35,10 +36,14 @@ function OrderConfirm() {
   }
   return (
     <>
+      <nav>
+        <Navbar />
+      </nav>
+
       <div className=" bg-white lg:py-6 flex justify-center">
       <div className="bg-white rounded-lg shadow-[0_3px_10px_rgb(0,0,0,0.2)] p-8 w-full max-w-xl text-center">
         {/* <AiOutlineCheckCircle className="text-green-500 text-7xl mx-auto" /> */}
-        <Image src={orderConfrimImage} className='w-[400px] mx-auto'/>
+        <Image src={orderConfrimImage} alt='Order Confirmation' className='w-[400px] mx-auto'/>
         <h1 className="text-xl lg:text-2xl font-semibold text-gray-800 mt-4">
           Thank you! Your order has been placed.
           
