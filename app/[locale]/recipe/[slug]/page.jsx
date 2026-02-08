@@ -1,4 +1,5 @@
 import React from 'react'
+import { notFound } from 'next/navigation';
 import Recipe1 from "../../../../public/recipe-1.png";
 import Slider1 from "../../../../public/hero-slider-1.jpeg";
 import Image from 'next/image';
@@ -11,6 +12,18 @@ async function page({params}) {
   const {slug} = params;
   const lastSlug = slug.split('/').pop();
   const recipe = await getRecipe(lastSlug);
+
+  if (
+    !recipe ||
+    !recipe.title ||
+    !recipe.banner ||
+    !recipe.recipe_categories ||
+    !recipe.recipe_categories.name
+  ) {
+    notFound();
+  }
+
+
   return (
     <main className='shadow-xl p-10 rounded-xl w-full'>
       <div className="banner">
