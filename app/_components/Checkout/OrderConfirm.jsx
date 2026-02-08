@@ -48,7 +48,7 @@ function OrderConfirm() {
         <div className="mt-10 flex flex-col lg:flex-row items-center justify-center gap-y-3 lg:gap-y-0 lg:gap-x-4">
           <Link href="/">
           <button className="px-4 py-2 bg-black text-white font-semibold rounded-lg">
-            Continue Shopping
+            Continue Shopping...
           </button>
           </Link>
           <Link href='/profile'>
