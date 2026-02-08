@@ -1,13 +1,25 @@
 import Image from 'next/image';
+import { notFound } from 'next/navigation';
 import { FaFacebook } from "react-icons/fa";
 import { RiInstagramFill } from "react-icons/ri";
 import { IoLogoWhatsapp } from "react-icons/io";
 import getBlog from '../../../_lib/blog/getBlog';
+
 async function page({params}) {
   const BASEURL = process.env.NEXT_PUBLIC_BASE_URL;
   const {slug} = params;
   const lastSlug = slug.split('/').pop();
   const recipe = await getBlog(lastSlug);
+
+  if (!recipe ||
+    !recipe.title ||
+    !recipe.banner ||
+    !recipe.blog_categories ||
+    !recipe.blog_categories.name
+  ) {
+    notFound();
+  }
+
   return (
     <main className='shadow-xl p-10 rounded-xl w-full'>
       <div className="banner">

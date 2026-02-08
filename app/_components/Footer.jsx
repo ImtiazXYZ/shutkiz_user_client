@@ -121,12 +121,12 @@ function Footer() {
             </div>
         </div>
       </div>
-      <div class="bg-[#F7F7F7] text-gray-600 text-center pt-4 pb-6">
-        <p class="text-sm">
+      <div className="bg-[#F7F7F7] text-gray-600 text-center pt-4 pb-6">
+        <p className="text-sm">
             &copy; <span id="currentYear">2025</span> Shutkiz. All rights reserved.
         </p>
-        <p class="text-sm">
-            Developed by <span class="font-bold">Authentic Four Technology</span>
+        <p className="text-sm">
+            Developed by <span className="font-bold">Authentic Four Technology</span>
         </p>
     </div>
     </main>

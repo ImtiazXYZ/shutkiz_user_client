@@ -1,4 +1,5 @@
 import React from 'react'
+import { notFound } from "next/navigation";
 import ImageSlider from "../../../_components/Product/ImageSlider";
 import Description from "../../../_components/Product/Description";
 import ReviewRating from "../../../_components/Product/ReviewRating";
@@ -46,6 +47,11 @@ export async function generateMetadata({ params }) {
   const { slug } = params;
   const baseUrl = 'https://www.shutkiz.com';
 
+  const mainProduct = await getProduct(slug);
+  if (!mainProduct || !mainProduct.product) {
+    notFound();
+  }
+
   return {
     alternates: {
       canonical: `${baseUrl}/product/${slug}`,
@@ -61,6 +67,11 @@ export async function generateMetadata({ params }) {
 async function SingleProduct({params}) {
     const {slug} = params;
     let mainProduct = await getProduct(slug);
+
+    if (!mainProduct || !mainProduct.product) {
+      notFound();
+    }
+
     const product = mainProduct.product;
     const relatedProducts = mainProduct.related_products;
     const relatedRecipes = mainProduct.product.recipes;
