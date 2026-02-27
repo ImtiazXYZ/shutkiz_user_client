@@ -6,7 +6,7 @@ function page() {
     <main>
       <div>
       <h2 className='text-center text-[26px] font-semibold pb-10'>Our Privacy Policy</h2>
-      <Image src={PrivacyImage}/>
+      <Image src={PrivacyImage} alt='privacy policy web banner'/>
       </div>
       <div className="all-item py-14 flex flex-col gap-y-10">
         <div className="single-item">

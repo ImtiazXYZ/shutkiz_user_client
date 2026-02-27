@@ -17,19 +17,12 @@ export default function Cart() {
     setIsOpen(!isOpen);
     try {
       const result = await getCart();
-      console.log("Full Cart Data:", result); // Log the complete response
-      console.log("Products in Cart:", result.data.products); // Log the products array
       setCarts(result.data.products || []); // Set the products or an empty array
     } catch (error) {
       console.error("Error fetching cart:", error);
       setCarts([]); // Clear carts in case of error
     }
   };
-
-  // Debugging: Log carts state to ensure it has data
-  useEffect(() => {
-    console.log("Carts state updated: ", carts);
-  }, [carts]);
 
   return (
     <div className="md:relative">

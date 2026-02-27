@@ -27,7 +27,7 @@ function RecipeBanner({title}) {
       <div className='grid grid-cols-1 md:grid-cols-2 gap-5'>
         <div>
             <div class="relative">
-            <Image src={RecipeBannerImage} alt="Image" class="w-full h-auto"/>
+            <Image src={RecipeBannerImage} alt="recipe banner image" class="w-full h-auto"/>
             <div class="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-white to-transparent"></div>
             <div className='absolute bottom-0 left-0 right-0 w-full'>
                 <div className='flex justify-center'>

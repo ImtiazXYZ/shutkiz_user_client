@@ -12,7 +12,9 @@ import createNextIntlPlugin from "next-intl/plugin";
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    unoptimized: true, //uncomment in production
+    // unoptimized: true, //uncomment in production
+    formats: ["image/avif", "image/webp"],
+
     //domains: ["localhost"], //uncomment in local
     domains: ["api-shutkiz.beemartbd.com"], //uncomment in production
   },

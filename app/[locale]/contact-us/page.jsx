@@ -7,7 +7,7 @@ function page() {
     <main>
         <div>
         <h2 className='text-center text-[26px] font-semibold pb-10'>Contact Us</h2>
-        <Image src={ContactImage} alt='img'/>
+        <Image src={ContactImage} alt='contact image'/>
         </div>
         <div className='py-14'>
             <div>

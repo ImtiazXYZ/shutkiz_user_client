@@ -202,7 +202,7 @@ function Checkout() {
             JSON.stringify(result.data.slug)
           );
           push("/checkout/order-confirm");
-          console.log(result);
+          // console.log(result);
         } else {
           toast.error("Something went wrong");
         }
