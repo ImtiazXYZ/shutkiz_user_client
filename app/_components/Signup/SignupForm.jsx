@@ -57,7 +57,7 @@ function SignupForm() {
     if(valid){
         const type = "user";
         const result = await handleRegistration({ name,mobile,email, password, type });
-        console.log(result);
+        // console.log(result);
         if (result.success) {
         setEmail("");
         setPassword("");
@@ -86,7 +86,7 @@ function SignupForm() {
             theme: "light",
             transition: Bounce,
         });
-        console.log(result.message);
+        // console.log(result.message);
         }
     }
   };

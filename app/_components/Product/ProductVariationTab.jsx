@@ -60,9 +60,6 @@ export default function ProductVariationTab({ stocks,productId }) {
           stock_status: stock.stock>0 ? "In Stock" : "Out of Stock",
         },
       });
-      console.log(result);
-    }else{
-      console.log(result.message);
     }
   };
 
@@ -78,8 +75,6 @@ export default function ProductVariationTab({ stocks,productId }) {
     if(resule.success){
       triggerCartUpdate();
       push('/checkout');
-    }else{
-      console.log(resule.message);
     }
   }
 

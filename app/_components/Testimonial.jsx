@@ -5,7 +5,7 @@ function Testimonial({img}) {
   return (
     <main>
       <div className='cursor-pointer p-5'>
-        <img src={`${BASEURL}/${img}`} width={500} height={400} alt='Testimonial Image' className='rounded-lg'/>
+        <Image src={`${BASEURL}/${img}`} width={500} height={400} alt='Testimonial Image' className='rounded-lg'/>
       </div>
     </main>
   )

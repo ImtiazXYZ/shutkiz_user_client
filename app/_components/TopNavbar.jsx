@@ -25,8 +25,11 @@ function TopNavbar() {
             <Image
               src={Logo}
               alt="Logo"
-              className="object-contain w-full h-auto"
+              width={280}
+              height={140}
+              sizes="140px"
               priority
+              className="object-contain"
             />
           </Link>
         </div>

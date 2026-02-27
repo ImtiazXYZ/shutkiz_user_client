@@ -19,7 +19,7 @@ function LoginForm() {
       e.preventDefault();
     const type = "user";
     const result = await handleLogin({ email, password, type });
-    console.log(result);
+    // console.log(result);
     if (result.success) {
       setEmail("");
       setPassword("");
@@ -48,7 +48,7 @@ function LoginForm() {
         theme: "light",
         transition: Bounce,
       });
-      console.log(result.message);
+      // console.log(result.message);
     }
   };
   return (

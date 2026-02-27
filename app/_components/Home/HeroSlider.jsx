@@ -25,10 +25,13 @@ export default function HeroSlider({ sliders }) {
           {slider.url?.startsWith("http") ? (
             <a href={slider.url} target="_blank" rel="noopener noreferrer">
               <Image
+                src={`${BASEURL}/${slider.image}`}
+                alt={slider.alt || "Slider Image"}
                 width={2000}
                 height={1000}
-                src={`${BASEURL}/${slider.image}`}
-                alt={slider.alt || "Slider Image"} // add alt text
+                priority={index === 0}
+                loading={index === 0 ? "eager" : "lazy"}
+                sizes="100vw"
                 className="rounded-2xl mx-auto w-full"
               />
             </a>

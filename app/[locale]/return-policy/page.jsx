@@ -6,7 +6,7 @@ function page() {
     <main>
       <div>
       <h2 className='text-center text-[26px] font-semibold pb-10'>Return & Refund Policy</h2>
-      <Image src={ReturnImage}/>
+      <Image src={ReturnImage} alt='return policy image'/>
       </div>
       <div className="all-item py-14 flex flex-col gap-y-10">
         <div className="single-item">

@@ -9,11 +9,11 @@ function CategoryPageMain() {
   return (
     <main>
       <div className='grid grid-cols-2 md:grid-cols-4 gap-5'>
-        <Product img={Product1} name="Naga Balachao নাগা বালাচাও" category="Balachao" price="800 - 1900"/>
-        <Product img={Product2} name="Naga Balachao নাগা বালাচাও" category="Balachao" price="800 - 1900"/>
-        <Product img={Product3} name="Naga Balachao নাগা বালাচাও" category="Balachao" price="800 - 1900"/>
-        <Product img={Product4} name="Naga Balachao নাগা বালাচাও" category="Balachao" price="800 - 1900"/>
-        <Product img={Product5} name="Naga Balachao নাগা বালাচাও" category="Balachao" price="800 - 1900"/>
+        <Product img={Product1} name="Naga Balachao নাগা বালাচাও" category="Balachao" price="800 - 1900" />
+        <Product img={Product2} name="Naga Balachao নাগা বালাচাও" category="Balachao" price="800 - 1900" />
+        <Product img={Product3} name="Naga Balachao নাগা বালাচাও" category="Balachao" price="800 - 1900" />
+        <Product img={Product4} name="Naga Balachao নাগা বালাচাও" category="Balachao" price="800 - 1900" />
+        <Product img={Product5} name="Naga Balachao নাগা বালাচাও" category="Balachao" price="800 - 1900" />
       </div>
     </main>
   )
