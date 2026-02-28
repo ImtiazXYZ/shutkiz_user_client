@@ -43,7 +43,7 @@ export default function ImageSlider({ thumbnail, galleryImages }) {
         >
           {/* <SwiperSlide  className='md:pl-12'>
               <InnerImageZoom
-                src={`${BASEURL}/${thumbnail}?v=${Date.now()}`} // Assuming image paths are relative to public folder
+                src={`${BASEURL}/${thumbnail}`} // Assuming image paths are relative to public folder
                 alt={`Product Image`}
                 className='mx-auto pt-5'
                 width={350}
@@ -53,7 +53,7 @@ export default function ImageSlider({ thumbnail, galleryImages }) {
           {galleryImages.map((img, index) => (
             <SwiperSlide key={index} className='md:pl-12'>
               <InnerImageZoom
-                src={`${BASEURL}/${img}?v=${Date.now()}`} // Assuming image paths are relative to public folder
+                src={`${BASEURL}/${img}`} // Assuming image paths are relative to public folder
                 alt={`Product Image ${index + 1}`}
                 className='mx-auto pt-5'
                 width={350}
@@ -65,7 +65,7 @@ export default function ImageSlider({ thumbnail, galleryImages }) {
           <SwiperSlide className="">
             <div className="relative aspect-square w-full mx-auto overflow-hidden rounded-lg bg-gray-100">
               <InnerImageZoom
-                src={`${BASEURL}/${thumbnail}?v=${Date.now()}`}
+                src={`${BASEURL}/${thumbnail}`}
                 alt="Product Image"
                 className="object-cover w-full h-full"
               />
@@ -76,7 +76,7 @@ export default function ImageSlider({ thumbnail, galleryImages }) {
             <SwiperSlide key={index} className="">
               <div className="relative aspect-square w-full mx-auto overflow-hidden rounded-lg bg-gray-100">
                 <InnerImageZoom
-                  src={`${BASEURL}/${img}?v=${Date.now()}`}
+                  src={`${BASEURL}/${img}`}
                   alt={`Product Image ${index + 1}`}
                   className="object-cover w-full h-full"
                 />
@@ -99,7 +99,7 @@ export default function ImageSlider({ thumbnail, galleryImages }) {
           >
             <SwiperSlide>
               <Image
-                src={`${BASEURL}/${thumbnail}?v=${Date.now()}`} // Assuming image paths are relative to public folder
+                src={`${BASEURL}/${thumbnail}`} // Assuming image paths are relative to public folder
                 alt={`Product Thumbnail`}
                 className={`w-14 border rounded-lg ${
                   selectedImage === 1000 ? "border-black" : ""
@@ -112,7 +112,7 @@ export default function ImageSlider({ thumbnail, galleryImages }) {
             {galleryImages.map((img, index) => (
               <SwiperSlide key={index}>
                 <Image
-                  src={`${BASEURL}/${img}?v=${Date.now()}`} // Assuming image paths are relative to public folder
+                  src={`${BASEURL}/${img}`} // Assuming image paths are relative to public folder
                   alt={`Product Thumbnail ${index + 1}`}
                   className={`w-14 border rounded-lg ${
                     selectedImage === index && selectedImage !== 1000

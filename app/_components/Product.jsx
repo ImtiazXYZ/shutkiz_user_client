@@ -9,7 +9,7 @@ function Product({ img, name, price, category, url }) {
     //     <div className="shadow-[0_3px_10px_rgb(0,0,0,0.2)] group-hover:shadow-[0_8px_30px_rgb(0,0,0,0.12)] duration-200 rounded-lg h-[350px] md:h-[350px] ">
     //       <div className="image relative">
     //         <Image
-    //           src={`${BASEURL}/${img}?v=${Date.now()}`}
+    //           src={`${BASEURL}/${img}`}
     //           width={190}
     //           height={290}
     //           alt={name}
@@ -35,7 +35,8 @@ function Product({ img, name, price, category, url }) {
         <div className="flex flex-col justify-between bg-white rounded-xl overflow-hidden shadow-[0_3px_10px_rgb(0,0,0,0.1)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.12)] transition-all duration-300">
           <div className="relative w-full aspect-square overflow-hidden bg-gray-100">
             <Image
-              src={`${BASEURL}/${img}?v=${Date.now()}`}
+              src={`${BASEURL}/${img}`}
+              // src={`${BASEURL}/${img}`}
               alt={name}
               fill
               sizes="(max-width: 768px) 50vw, 211px"

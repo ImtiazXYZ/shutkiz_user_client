@@ -27,8 +27,8 @@ export default function HeroSlider({ sliders }) {
               <Image
                 src={`${BASEURL}/${slider.image}`}
                 alt={slider.alt || "Slider Image"}
-                width={2000}
-                height={1000}
+                width={1200} // 2000
+                height={600} // 1000
                 priority={index === 0}
                 loading={index === 0 ? "eager" : "lazy"}
                 sizes="100vw"
@@ -38,10 +38,12 @@ export default function HeroSlider({ sliders }) {
           ) : (
             <Link href={slider.url}>
               <Image
-                width={2000}
-                height={1000}
                 src={`${BASEURL}/${slider.image}`}
                 alt={slider.alt || "Slider Image"} // add alt text
+                width={1200}
+                height={600}
+                priority={index === 0}
+                loading={index === 0 ? "eager" : "lazy"}
                 className="rounded-2xl mx-auto w-full"
               />
             </Link>

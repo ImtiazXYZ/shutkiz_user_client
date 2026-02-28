@@ -30,7 +30,7 @@ async function page({params}) {
           <div>
           <p className=' pb-2 text-sm font-semibold pt-12'>{recipe.blog_categories.name}</p>
         <p className='text-sm pb-4'>Posted on May 16, 2024</p>
-        <Image src={`${BASEURL}/${recipe.banner}?v=${Date.now()}`} width={800} height={500} alt='Recipe Banner' className='rounded-lg'/>
+        <Image src={`${BASEURL}/${recipe.banner}`} width={800} height={500} alt='Recipe Banner' className='rounded-lg'/>
           </div>
         </div>
       </div>
