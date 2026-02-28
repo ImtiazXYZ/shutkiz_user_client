@@ -18,6 +18,7 @@
 // export default RecipeVideo;
 
 // commented above code and added lite-youtube-embed for better performance and user experience
+import "lite-youtube-embed";
 import "lite-youtube-embed/src/lite-yt-embed.css";
 
 function RecipeVideo() {
