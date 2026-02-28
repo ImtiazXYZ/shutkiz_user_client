@@ -52,9 +52,7 @@ export default function MobileCategory({ categories }) {
                           </div>
                           {category?.thumbnail && (
                             <Image
-                              src={`${BASEURL}/${
-                                category?.thumbnail
-                              }?v=${Date.now()}`}
+                              src={`${BASEURL}/${category?.thumbnail}`}
                               width={100}
                               height={100}
                               alt={category?.name || "Category"}

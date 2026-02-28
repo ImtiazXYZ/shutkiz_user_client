@@ -11,7 +11,7 @@ function Recipe({ img, name, detailsUrl }) {
         <div className="shadow-[0_3px_10px_rgb(0,0,0,0.2)] rounded-lg group-hover:shadow-[0_8px_30px_rgb(0,0,0,0.12)] duration-200 overflow-hidden lg:h-[280px] xl:h-[350px] 2xl:h-[320px]">
           <div>
             <Image
-              src={`${BASEURL}/${img}?v=${Date.now()}`}
+              src={`${BASEURL}/${img}`}
               alt="Recipe Image"
               className="rounded-t-lg group-hover:scale-110 duration-300 ease-in-out"
               width={500}
