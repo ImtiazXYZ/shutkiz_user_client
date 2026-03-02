@@ -23,7 +23,8 @@ export default function FetchPublic() {
 
   const fetchPublic = async (endpoint = "") => {
     const response = await fetch(`${APIURL}${endpoint}`, {
-      cache: "no-store",
+      // cache: "no-store",
+      next: { revalidate: 3600 }, 
     });
 
     let data = null;
