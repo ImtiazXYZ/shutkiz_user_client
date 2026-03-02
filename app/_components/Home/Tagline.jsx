@@ -6,7 +6,7 @@ function Tagline() {
   return (
     <main className="">
       <div className='relative max-w-[600px] mx-auto'>
-      <div className="text-center bg-[#00B0EA] py-2 w-full text-white rounded-xl font-semibold">
+      <div className="text-center bg-[#00B0EA] py-2 w-full text-black rounded-xl font-semibold">
       <p>শুটকিজ – নিরাপদ শুঁটকি থেকেও বেশী কিছু </p>
       </div>
       <div className="hidden md:block bg-white p-4 absolute left-10 top-1/2 transform -translate-y-1/2 rounded-full shadow-[0_8px_30px_rgb(0,0,0,0.12)]">

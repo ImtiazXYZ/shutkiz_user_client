@@ -15,7 +15,7 @@ async function MobileNavbar() {
           <Link href="/">
             <div className="flex flex-col items-center text-[--primaryColor] ">
               <GoHome className="h-6 w-6" />
-              <span className="text-xs text-[--primaryColor]">Home</span>
+              <span className="text-xs font-medium text-[--primaryColor]">Home</span>
             </div>
           </Link>
           <div>
@@ -36,7 +36,7 @@ async function MobileNavbar() {
               className="flex flex-col items-center text-gray-600 "
             >
               <FaWhatsapp className="h-6 w-6" />
-              <span className="text-xs text-black">Whatsapp</span>
+              <span className="text-xs font-medium text-black">Whatsapp</span>
             </a>
           </div>
           <div>
