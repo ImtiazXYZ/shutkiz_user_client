@@ -74,18 +74,20 @@ function BottomNavbar({ categories }) {
             </Link> */}
 
           {categories.map((category) => (
-            <Link key={category.name} href={`/category/${category?.slug}`}>
-              <li
-                className={`bg-[#f6f7f9] select-none duration-100 cursor-pointer px-5 py-1 rounded-full ${isActive(
-                  `/en/category/${category?.slug}`,
-                  `/bn/category/${category?.slug}`
-                )}`}
-              >
-                {local === "bn" && category?.bn_name
-                  ? category.bn_name
-                  : category?.name}
-              </li>
-            </Link>
+            <ul key={category.name}>
+              <Link href={`/category/${category?.slug}`}>
+                <li
+                  className={`bg-[#f6f7f9] select-none duration-100 cursor-pointer px-5 py-1 rounded-full ${isActive(
+                    `/en/category/${category?.slug}`,
+                    `/bn/category/${category?.slug}`
+                  )}`}
+                >
+                  {local === "bn" && category?.bn_name
+                    ? category.bn_name
+                    : category?.name}
+                </li>
+              </Link>
+            </ul>
           ))}
 
           {/* <Link href="/category/premium-dry-fish">

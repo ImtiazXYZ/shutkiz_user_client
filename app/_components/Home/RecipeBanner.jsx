@@ -19,7 +19,7 @@ function RecipeBanner({title}) {
             <p className="text-black font-semibold text-lg pb-5">{title}</p>
         </div>
       </div>
-      <Link href="/recipe">
+      <Link href="/recipe" aria-label={`View all ${title}`} className="flex items-center gap-1 text-sky-500">
       <IoIosArrowRoundForward className='text-4xl cursor-pointer'/>
       </Link>
       </div>

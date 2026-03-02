@@ -13,7 +13,7 @@ function AllProductSlider({ title, products, url }) {
     <div>
       <div className="flex justify-between items-center">
         <p className="text-black font-semibold text-lg pb-5">{title}</p>
-        <Link href={url}>
+        <Link href={url} aria-label={`View all ${title}`} className="flex items-center gap-1 text-sky-500">
           <IoIosArrowRoundForward className="text-4xl cursor-pointer" />
         </Link>
       </div>
