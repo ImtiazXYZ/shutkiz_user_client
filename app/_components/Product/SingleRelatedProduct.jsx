@@ -38,7 +38,7 @@ function SingleRelatedProduct({ img, name, price, category, url }) {
 
             {/* Button pushed to bottom */}
             <div className="mt-auto pt-4">
-              <button className="w-full bg-sky-600 hover:bg-sky-500 text-white py-2 rounded-lg text-sm font-semibold transition-colors duration-300">
+              <button className="w-full bg-sky-600 hover:bg-sky-500 text-white text-base md:text-lg font-semibold py-2 rounded-lg transition-colors duration-300">
                 Buy Now
               </button>
             </div>

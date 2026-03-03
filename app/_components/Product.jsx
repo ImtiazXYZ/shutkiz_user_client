@@ -55,7 +55,7 @@ function Product({ img, name, price, category, url }) {
 
             <div className="mt-4">
               <Link href={url}>
-                <button className="w-full bg-sky-600 hover:bg-sky-500 transition-colors duration-200 text-white font-medium px-4 py-2 rounded-lg text-sm md:text-base tracking-wider">
+                <button className="w-full bg-sky-600 hover:bg-sky-500 transition-colors duration-200 text-white font-semibold px-4 py-2 rounded-lg text-base md:text-lg tracking-wider">
                   Buy Now
                 </button>
               </Link>

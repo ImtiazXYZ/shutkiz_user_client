@@ -11,6 +11,8 @@ import { useLocale, useTranslations } from "next-intl";
 import Image from "next/image";
 import Link from "next/link";
 import { BiCategory } from "react-icons/bi";
+
+
 export default function MobileCategory({ categories }) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const t = useTranslations("HomePage");
@@ -24,7 +26,7 @@ export default function MobileCategory({ categories }) {
         className="flex flex-col items-center text-gray-600 "
       >
         <BiCategory className="h-6 w-6" />
-        <span className="text-xs text-black">Category</span>
+        <span className="text-xs font-semibold text-black">Category</span>
       </div>
       <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
         <ModalContent>

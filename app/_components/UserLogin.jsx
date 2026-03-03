@@ -97,14 +97,14 @@ export default function UserLogin() {
         {!isLoggedIn ? (
           <div className="flex flex-col items-center">
             <AiOutlineUser className="text-[24px]" onClick={onOpen} />
-            <span className="text-xs text-black block md:hidden">Login</span>
+            <span className="text-xs font-semibold text-black block md:hidden">Login</span>
           </div>
         ) : (
           <Dropdown>
             <DropdownTrigger>
               <div className="flex flex-col items-center">
                 <AiOutlineUser className="text-2xl" />
-                <span className="text-xs text-black block md:hidden">Profile</span>
+                <span className="text-xs font-semibold text-black block md:hidden">Profile</span>
               </div>
             </DropdownTrigger>
             <DropdownMenu aria-label="Example with disabled actions">
