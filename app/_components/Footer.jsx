@@ -77,53 +77,47 @@ function Footer() {
         <div className='combine flex justify-between py-4 md:hidden'>
         <div className="item-2">
             <ul className='text-[15px] leading-7'>
-                {
-                    navLinksOne.map((nav,index)=>(
-                        <ul key={index}>
-                            <Link href={nav.link} >
-                                <li><span className='hover:text-[--primaryColor] cursor-pointer duration-200'>{nav.name}</span></li>
-                            </Link>
-                        </ul>
-                    ))
-                }
+                {navLinksOne.map((nav, index) => (                       
+                    <li key={index}>
+                        <Link href={nav.link} className='hover:text-[--primaryColor] cursor-pointer duration-200'>
+                            <span>{nav.name}</span>
+                        </Link>
+                    </li>                        
+                ))}
             </ul>
         </div>
         <div className="item-3">
             <ul className='text-[15px] leading-7'>
-                {
-                    navLinksTwo.map((nav,index)=>(
-                        <Link href={nav.link} key={index}>
-                            <li><span className='hover:text-[--primaryColor] cursor-pointer duration-200'>{nav.name}</span></li>
+                {navLinksTwo.map((nav, index) => (
+                    <li key={index}>
+                        <Link href={nav.link} className='hover:text-[--primaryColor] cursor-pointer duration-200'>
+                            <span>{nav.name}</span>
                         </Link>
-                    ))
-                }
+                    </li>
+                ))}
             </ul>
         </div>
         </div>
         <div className="item-2 hidden md:block md:order-1 lg:order-2">
-        <ul className='text-[15px] leading-7'>
-                {
-                    navLinksOne.map((nav,index)=>(
-                        <ul key={index}>
-                            <Link href={nav.link} >
-                                <li><span className='hover:text-[--primaryColor] cursor-pointer duration-200'>{nav.name}</span></li>
-                            </Link>
-                        </ul>
-                    ))
-                }
+            <ul className='text-[15px] leading-7'>
+                {navLinksOne.map((nav,index)=>(
+                    <li key={index} >
+                        <Link href={nav.link} className='hover:text-[--primaryColor] cursor-pointer duration-200'>
+                            <span>{nav.name}</span>
+                        </Link>
+                    </li>
+                ))}
             </ul>
         </div>
         <div className="item-3 hidden md:block md:order-2">
         <ul className='text-[15px] leading-7'>
-                {
-                    navLinksTwo.map((nav,index)=>(
-                        <ul key={index}>
-                            <Link href={nav.link} key={index}>
-                                <li><span className='hover:text-[--primaryColor] cursor-pointer duration-200'>{nav.name}</span></li>
-                            </Link>
-                        </ul>
-                    ))
-                }
+                {navLinksTwo.map((nav,index)=>(
+                    <li key={index}>
+                        <Link href={nav.link} className='hover:text-[--primaryColor] cursor-pointer duration-200'>
+                            <span>{nav.name}</span>
+                        </Link>
+                    </li>
+                ))}
             </ul>
         </div>
         <div className="item-4 md:order-4 lg:order-4">

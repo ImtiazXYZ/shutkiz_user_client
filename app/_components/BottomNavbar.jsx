@@ -3,6 +3,7 @@ import { useLocale, useTranslations } from "next-intl";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
+
 function BottomNavbar({ categories }) {
   const scrollRef = useRef(null);
   const [isDragging, setIsDragging] = useState(false);
@@ -74,20 +75,19 @@ function BottomNavbar({ categories }) {
             </Link> */}
 
           {categories.map((category) => (
-            <ul key={category.name}>
-              <Link href={`/category/${category?.slug}`}>
-                <li
-                  className={`bg-[#f6f7f9] select-none duration-100 cursor-pointer px-5 py-1 rounded-full ${isActive(
-                    `/en/category/${category?.slug}`,
-                    `/bn/category/${category?.slug}`
-                  )}`}
-                >
-                  {local === "bn" && category?.bn_name
-                    ? category.bn_name
-                    : category?.name}
-                </li>
-              </Link>
-            </ul>
+              <li key={category.name}>
+                  <Link 
+                      href={`/category/${category?.slug}`}
+                      className={`bg-[#f6f7f9] select-none duration-100 cursor-pointer px-5 py-1 rounded-full ${isActive(
+                          `/en/category/${category?.slug}`,
+                          `/bn/category/${category?.slug}`
+                      )}`}
+                  >
+                      {local === "bn" && category?.bn_name
+                          ? category.bn_name
+                          : category?.name}
+                  </Link>
+              </li>
           ))}
 
           {/* <Link href="/category/premium-dry-fish">
@@ -123,8 +123,9 @@ function BottomNavbar({ categories }) {
             </li>
           </Link> */}
 
-          <Link href="/recipe">
-            <li
+          <li>
+            <Link 
+              href="/recipe"
               className={`bg-[#f6f7f9] select-none duration-100 cursor-pointer px-5 py-1 rounded-full ${
                 pathname.startsWith("/en/recipe") ||
                 pathname.startsWith("/bn/recipe")
@@ -133,8 +134,8 @@ function BottomNavbar({ categories }) {
               }`}
             >
               {t("recipe")}
-            </li>
-          </Link>
+            </Link>
+          </li>
 
           {/* <Link href="">
             <li className={`bg-[#f6f7f9] select-none duration-100 cursor-pointer px-5 py-1 rounded-full ${isActive("")}`}>{t("delarship")}</li>
@@ -210,8 +211,9 @@ function BottomNavbar({ categories }) {
             </div>
             </div> */}
 
-          <Link href="/blog">
-            <li
+          <li>
+            <Link
+              href="/blog"
               className={`bg-[#f6f7f9] select-none duration-100 cursor-pointer px-5 py-1 rounded-full ${
                 pathname.startsWith("/en/blog") ||
                 pathname.startsWith("/bn/blog")
@@ -220,11 +222,12 @@ function BottomNavbar({ categories }) {
               }`}
             >
               {t("blog")}
-            </li>
-          </Link>
+            </Link>
+          </li>
 
-          <Link href="/events/our-activities">
-            <li
+          <li>
+            <Link 
+              href="/events/our-activities"
               className={`bg-[#f6f7f9] select-none duration-100 cursor-pointer px-5 py-1 rounded-full ${
                 pathname.startsWith("/en/events/our-activities") ||
                 pathname.startsWith("/bn/events/our-activities")
@@ -233,8 +236,8 @@ function BottomNavbar({ categories }) {
               }`}
             >
               {t("events.child1")}
-            </li>
-          </Link>
+            </Link>
+          </li>
 
           {/* <li className='bg-[#f6f7f9] select-none duration-100 cursor-pointer px-5 py-1 rounded-full'>{t("about")}</li>
             <li className='bg-[#f6f7f9] select-none duration-100 cursor-pointer px-5 py-1 rounded-full'>{t("contact")}</li> */}
