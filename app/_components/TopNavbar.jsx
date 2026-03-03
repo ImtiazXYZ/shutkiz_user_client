@@ -24,7 +24,7 @@ function TopNavbar() {
           <Link href="/" className="block">
             <Image
               src={Logo}
-              alt="Logo"
+              alt="Shutkiz Logo"
               width={280}
               height={140}
               sizes="140px"

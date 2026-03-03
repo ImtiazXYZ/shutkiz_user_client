@@ -1,11 +1,8 @@
-import React from 'react'
-import { FaFacebookSquare } from "react-icons/fa";
-import { FaInstagramSquare } from "react-icons/fa";
-import { IoLogoYoutube } from "react-icons/io5";
-import { IoLogoLinkedin } from "react-icons/io";
-import { FaRegPaperPlane } from "react-icons/fa6";
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
+import { FaFacebookSquare, FaInstagramSquare } from "react-icons/fa";
+import { FaRegPaperPlane } from "react-icons/fa6";
+import { IoLogoYoutube } from "react-icons/io5";
 function Footer() {
     const t = useTranslations("Footer");
     const navLinksOne = [
@@ -52,13 +49,27 @@ function Footer() {
                 <div className='py-3 px-5 border border-gray-300 rounded-md text-center'>+008 01324536626</div>
             </div>
             <div className='py-3 px-5 bg-gray-200 rounded-md mt-4 flex justify-evenly'>
-                <a href="https://www.facebook.com/shutkizbd?mibextid=ZbWKwL">
-                <FaFacebookSquare className='text-xl hover:text-[--primaryColor] duration-200 cursor-pointer'/>
+                <a 
+                    href="https://www.facebook.com/shutkizbd?mibextid=ZbWKwL"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="Visit Shutkiz on Facebook"
+                >
+                    <FaFacebookSquare className='text-xl hover:text-[--primaryColor] duration-200 cursor-pointer'/>
                 </a>
-                <a href="https://www.instagram.com/shutkizbd?igsh=czh2MHl5eGw2bmN3">
+                <a 
+                    href="https://www.instagram.com/shutkizbd?igsh=czh2MHl5eGw2bmN3"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="Visit Shutkiz on Instagram"
+                >
                 <FaInstagramSquare className='text-xl hover:text-[--primaryColor] duration-200 cursor-pointer'/>
                 </a>
-                <a href="https://www.youtube.com/@shutkizbd">
+                <a 
+                    href="https://www.youtube.com/@shutkizbd" 
+                    target="_blank" rel="noopener noreferrer" 
+                    aria-label="Visit Shutkiz on YouTube"
+                >
                 <IoLogoYoutube className='text-xl hover:text-[--primaryColor] duration-200 cursor-pointer'/>
                 </a>
             </div>
@@ -68,9 +79,11 @@ function Footer() {
             <ul className='text-[15px] leading-7'>
                 {
                     navLinksOne.map((nav,index)=>(
-                        <Link href={nav.link} key={index}>
-                            <li><span className='hover:text-[--primaryColor] cursor-pointer duration-200'>{nav.name}</span></li>
-                        </Link>
+                        <ul key={index}>
+                            <Link href={nav.link} >
+                                <li><span className='hover:text-[--primaryColor] cursor-pointer duration-200'>{nav.name}</span></li>
+                            </Link>
+                        </ul>
                     ))
                 }
             </ul>
@@ -91,9 +104,11 @@ function Footer() {
         <ul className='text-[15px] leading-7'>
                 {
                     navLinksOne.map((nav,index)=>(
-                        <Link href={nav.link} key={index}>
-                            <li><span className='hover:text-[--primaryColor] cursor-pointer duration-200'>{nav.name}</span></li>
-                        </Link>
+                        <ul key={index}>
+                            <Link href={nav.link} >
+                                <li><span className='hover:text-[--primaryColor] cursor-pointer duration-200'>{nav.name}</span></li>
+                            </Link>
+                        </ul>
                     ))
                 }
             </ul>
@@ -102,9 +117,11 @@ function Footer() {
         <ul className='text-[15px] leading-7'>
                 {
                     navLinksTwo.map((nav,index)=>(
-                        <Link href={nav.link} key={index}>
-                            <li><span className='hover:text-[--primaryColor] cursor-pointer duration-200'>{nav.name}</span></li>
-                        </Link>
+                        <ul key={index}>
+                            <Link href={nav.link} key={index}>
+                                <li><span className='hover:text-[--primaryColor] cursor-pointer duration-200'>{nav.name}</span></li>
+                            </Link>
+                        </ul>
                     ))
                 }
             </ul>

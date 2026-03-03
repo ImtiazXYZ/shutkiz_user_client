@@ -10,7 +10,7 @@ function HeroSingleCategory({ img, name, url }) {
             <div className="bg-gray-100 w-[70px] md:w-[90px] lg:w-[120px] h-[70px] md:h-[90px] lg:h-[120px] rounded-full flex justify-center items-center group-hover:ring-2 ring-black duration-100 ease-in-out">
               <Image
                 src={img}
-                alt={name}
+                alt={`${name} category image`}
                 width={192}
                 height={192}
                 sizes="(max-width: 768px) 56px, (max-width: 1024px) 72px, 96px"
