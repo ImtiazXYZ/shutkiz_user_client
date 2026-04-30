@@ -20,12 +20,12 @@ export default function Home() {
       <section id="hero-slider">
         <HeroSliderWrapper />
       </section>
-      <section id="tagline" className="pt-10 md:pt-14 md:pb-5">
+      {/* <section id="tagline" className="pt-10 md:pt-14 md:pb-5">
         <Tagline />
-      </section>
-      <section id="hero-banner-bottom-card" className="py-10 lg:py-14">
+      </section> */}
+      {/* <section id="hero-banner-bottom-card" className="py-10 lg:py-14">
         <BannerBottomCard />
-      </section>
+      </section> */}
       <section id="hero-categories" className="py-10 lg:py-14">
         <HeroCategory />
       </section>
