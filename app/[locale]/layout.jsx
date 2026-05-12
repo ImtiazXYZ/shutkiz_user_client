@@ -16,7 +16,8 @@ import "./globals.css";
 
 const roboto = Roboto({ subsets: ["latin"], weight: "400" });
 
-const GTM_ID = "GTM-K383WB5T";
+const GTM_ID = process.env.NEXT_PUBLIC_GTM_ID;
+
 
 export const metadata = {
   title: "Shutkiz – The Premium Taste of Shutki",

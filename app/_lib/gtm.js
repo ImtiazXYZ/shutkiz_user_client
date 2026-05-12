@@ -74,3 +74,19 @@ export const trackPurchase = (order, user = {}) => {
     },
   });
 };
+
+export const trackSelectItem = (product) => {
+  pushToDataLayer({
+    event: "select_item",
+    ecommerce: {
+      items: [
+        {
+          item_id: product.id,
+          item_name: product.name,
+          item_category: product.category,
+          price: product.price,
+        },
+      ],
+    },
+  });
+};
