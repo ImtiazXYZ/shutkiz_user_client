@@ -1,11 +1,24 @@
 export const pushToDataLayer = (data) => {
-  if (typeof window === "undefined") return;
+  if (typeof window === "undefined") {
+    console.log("GTM: Window is undefined (server-side)");
+    return;
+  }
 
+  // Initialize dataLayer if it doesn't exist
   window.dataLayer = window.dataLayer || [];
+  
+  // Push the data
   window.dataLayer.push(data);
 
+  // Enhanced logging
   if (process.env.NODE_ENV === "development") {
-    console.log("GTM Event:", data);
+    console.log("✅ GTM Event Pushed:", data);
+    console.log("📊 Current dataLayer:", window.dataLayer);
+    
+    // Also add a visual indicator in the console
+    console.group(`🎯 GTM Event: ${data.event || 'unknown'}`);
+    console.log('Event data:', data);
+    console.groupEnd();
   }
 };
 
@@ -77,7 +90,7 @@ export const trackPurchase = (order, user = {}) => {
 
 export const trackSelectItem = (product) => {
   pushToDataLayer({
-    event: "select_item",
+    event: "view_item",
     ecommerce: {
       items: [
         {

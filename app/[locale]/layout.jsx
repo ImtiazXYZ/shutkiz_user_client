@@ -11,6 +11,7 @@ import MobileNavbar from "../_components/MobileNavbar";
 import Navbar from "../_components/Navbar";
 import UIProvider from "../_lib/UIProvider";
 import GTMTracker from "../_components/GTMTracker";
+import GTMLoaderInit from "../_components/GTMLoaderInit";
 
 import "./globals.css";
 
@@ -32,10 +33,20 @@ export default async function RootLayout({ children }) {
     <NextIntlClientProvider messages={messages}>
       <html lang="en">
         <head>
+          <Script
+            id="datalayer-init"
+            strategy="beforeInteractive"
+            dangerouslySetInnerHTML={{
+              __html: `
+                window.dataLayer = window.dataLayer || [];
+                console.log('✅ dataLayer initialized early', window.dataLayer);
+              `,
+            }}
+          />
           {/* Google Tag Manager */}
           <Script
             id="gtm-script"
-            strategy="afterInteractive"
+            strategy="beforeInteractive"
             dangerouslySetInnerHTML={{
               __html: `
                 (function(w,d,s,l,i){
@@ -58,6 +69,7 @@ export default async function RootLayout({ children }) {
         </head>
 
         <body className={roboto.className}>
+            <GTMLoaderInit />
           {/* GTM noscript */}
           <noscript>
             <iframe

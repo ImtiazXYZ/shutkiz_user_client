@@ -1,7 +1,10 @@
+"use client";
+
+import { trackSelectItem } from "../_lib/gtm";
 import Image from "next/image";
 import Link from "next/link";
 
-function Product({ img, name, price, category, url }) {
+function Product({ id,img, name, price, category, url }) {
   const BASEURL = process.env.NEXT_PUBLIC_BASE_URL;
   return (
     // <main className="group cursor-pointer relative">
@@ -31,7 +34,19 @@ function Product({ img, name, price, category, url }) {
     //   </Link>
     // </main>
     <main className="group cursor-pointer">
-      <Link href={url} className="block">
+
+      <Link
+  href={url}
+  className="block"
+  onClick={() =>
+    trackSelectItem({
+      id,
+      name,
+      category,
+      price,
+    })
+  }
+>
         <div className="flex flex-col justify-between bg-white rounded-xl overflow-hidden shadow-[0_3px_10px_rgb(0,0,0,0.1)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.12)] transition-all duration-300">
           <div className="relative w-full aspect-square overflow-hidden bg-gray-100">
             <Image
@@ -53,13 +68,20 @@ function Product({ img, name, price, category, url }) {
               <p className="text-lg font-semibold text-black mt-1">৳ {price}</p>
             </div>
 
-            <div className="mt-4">
+            {/* <div className="mt-4">
               <Link href={url}>
                 <button className="w-full bg-sky-600 hover:bg-sky-500 transition-colors duration-200 text-white font-semibold px-4 py-2 rounded-lg text-base md:text-lg tracking-wider">
                   Buy Now
                 </button>
               </Link>
-            </div>
+            </div> */}
+
+
+            <div className="mt-4">
+            <button className="w-full bg-sky-600 hover:bg-sky-500 transition-colors duration-200 text-white font-semibold px-4 py-2 rounded-lg text-base md:text-lg tracking-wider">
+              Buy Now
+            </button>
+          </div>
           </div>
         </div>
       </Link>

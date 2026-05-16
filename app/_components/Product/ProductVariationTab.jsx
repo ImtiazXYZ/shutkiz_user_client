@@ -8,12 +8,14 @@ import toast, { Toaster } from 'react-hot-toast';
 import {useCartStore} from "../../store/cartStore";
 import { useRouter } from "next/navigation";
 import ReactPixel from "react-facebook-pixel";
-export default function ProductVariationTab({ stocks,productId }) {
+import { trackAddToCart, trackBeginCheckout } from "../../_lib/gtm"; // Add GTM imports
+
+export default function ProductVariationTab({ stocks, productId }) {
   const [selectedStock, setSelectedStock] = useState(stocks[0]);
   const [quantity, setQuantity] = useState(1);
   const [selected, setSelected] = useState(0);
   const { triggerCartUpdate } = useCartStore();
-  const {push} = useRouter();
+  const { push } = useRouter();
 
   const increment = () => {
     if (quantity < 10) {
@@ -46,24 +48,39 @@ export default function ProductVariationTab({ stocks,productId }) {
       toast.success('Product add to cart');
       const product = result.data.product;
       const stock = product.stocks[0];
+      
+      // Facebook Pixel tracking
       ReactPixel.track("AddToCart", {
         content_ids: product.id,
         content_name: product.name,
         content_type : 'product',
         content_category : product.category.name,
         subcategory_name : product.subcategory?.name,
-        value: stock.is_discount?stock.discount_price:stock.regular_price,
+        value: stock.is_discount ? stock.discount_price : stock.regular_price,
         currency: "BDT",
         num_items : quantity,
         custom_data: {
           seller: "Shutkiz",
-          stock_status: stock.stock>0 ? "In Stock" : "Out of Stock",
+          stock_status: stock.stock > 0 ? "In Stock" : "Out of Stock",
         },
       });
+      
+      // ✅ GTM Add to Cart tracking
+      const price = stock.is_discount ? stock.discount_price : stock.regular_price;
+      trackAddToCart({
+        id: String(product.id),
+        name: product.name,
+        price: Number(price),
+        category: product.category?.name || "Uncategorized",
+        quantity: quantity,
+        currency: "BDT"
+      });
+      
+      console.log("✅ GTM Add to Cart tracked for:", product.name);
     }
   };
 
-  const handleBuyNow=async()=>{
+  const handleBuyNow = async () => {
     let isTempId = false;
     const temp_user_id = Cookies.get("temp_user_id");
     if(temp_user_id){
@@ -71,17 +88,43 @@ export default function ProductVariationTab({ stocks,productId }) {
     }else{
       isTempId = false;
     }
-    const resule = await addToCart(productId, selectedStock.id, quantity, isTempId);
-    if(resule.success){
+    const result = await addToCart(productId, selectedStock.id, quantity, isTempId);
+    if(result.success){
       triggerCartUpdate();
+      
+      const product = result.data.product;
+      const stock = product.stocks[0];
+      const price = stock.is_discount ? stock.discount_price : stock.regular_price;
+      
+      // ✅ Track Add to Cart first
+      trackAddToCart({
+        id: String(product.id),
+        name: product.name,
+        price: Number(price),
+        category: product.category?.name || "Uncategorized",
+        quantity: quantity,
+        currency: "BDT"
+      });
+      
+      // ✅ Then track Begin Checkout
+      trackBeginCheckout({
+        currency: "BDT",
+        total: Number(price) * quantity,
+        items: [{
+          id: String(product.id),
+          name: product.name,
+          price: Number(price),
+          category: product.category?.name || "Uncategorized",
+          quantity: quantity
+        }]
+      });
+      
+      console.log("✅ GTM Events tracked - Add to Cart & Begin Checkout");
+      
+      // Navigate to checkout
       push('/checkout');
     }
   }
-
-
-
-
-
 
   return (
     <div className="flex w-full flex-col">
@@ -106,23 +149,22 @@ export default function ProductVariationTab({ stocks,productId }) {
                   ) : (
                     <div>
                       <h2 className="text-xl font-semibold pb-3">৳ {stock.regular_price}</h2>
-                      
                     </div>
                   )}
                 </div>
-                  <div className="item flex items-center gap-x-2 text-[13px]">
-                          {
-                            stock.stock >0 ?
-                            <p className="text-green-500">In Stock ({stock.stock})</p>
-                            :
-                            <p className="text-red-500">Out Of Stock</p>
-                          }
-                      </div>
+                <div className="item flex items-center gap-x-2 text-[13px]">
+                  {stock.stock > 0 ?
+                    <p className="text-green-500">In Stock ({stock.stock})</p>
+                    :
+                    <p className="text-red-500">Out Of Stock</p>
+                  }
+                </div>
               </CardBody>
             </Card>
           </Tab>
         ))}
       </Tabs>
+      
       <div className="">
         <div className="flex">
           <div
@@ -141,21 +183,22 @@ export default function ProductVariationTab({ stocks,productId }) {
             <button>+</button>
           </div>
         </div>
+        
         <div className="flex pt-5 items-center gap-x-5">
-        <button 
-          disabled={selectedStock.stock <= 0}
-          className={`text-white ${selectedStock.stock>0?'bg-[#19A8E1] hover:bg-[#1ebfff] duration-200':'bg-gray-500'} w-[150px] p-2.5 rounded-lg`}
-          onClick={handleAddToBag}
-        >
-          {selectedStock.stock > 0 ? "Add To Cart" : "Out of Stock"}
-        </button>
-        <button 
-          disabled={selectedStock.stock <= 0}
-          className={`text-white ${selectedStock.stock>0?'bg-[#F08734] hover:bg-[#ff984a] duration-200':'bg-gray-500'} w-[150px] p-2.5 rounded-lg`}
-          onClick={handleBuyNow}
-        >
-          {selectedStock.stock > 0 ? "Buy Now" : "Out of Stock"}
-        </button>
+          <button 
+            disabled={selectedStock.stock <= 0}
+            className={`text-white ${selectedStock.stock > 0 ? 'bg-[#19A8E1] hover:bg-[#1ebfff] duration-200' : 'bg-gray-500'} w-[150px] p-2.5 rounded-lg`}
+            onClick={handleAddToBag}
+          >
+            {selectedStock.stock > 0 ? "Add To Cart" : "Out of Stock"}
+          </button>
+          <button 
+            disabled={selectedStock.stock <= 0}
+            className={`text-white ${selectedStock.stock > 0 ? 'bg-[#F08734] hover:bg-[#ff984a] duration-200' : 'bg-gray-500'} w-[150px] p-2.5 rounded-lg`}
+            onClick={handleBuyNow}
+          >
+            {selectedStock.stock > 0 ? "Buy Now" : "Out of Stock"}
+          </button>
         </div>
       </div>
       <Toaster />
