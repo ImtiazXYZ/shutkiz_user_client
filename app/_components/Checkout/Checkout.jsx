@@ -1,7 +1,7 @@
 "use client";
 import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import toast from "react-hot-toast";
 import { Bounce, toast as customToast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -14,12 +14,14 @@ import getCart from "../../_lib/cart/getCart";
 import updateCart from "../../_lib/cart/updateCart";
 import applyCoupon from "../../_lib/coupon/applyCoupon";
 import { initiateCheckout, orderData } from "../../_lib/facebookPixel/pixel";
+import { trackBeginCheckout } from "../../_lib/gtm";
 import checkFreeDelivery from "../../_lib/free-delivery/checkFreeDelivery";
 import orderConfirm from "../../_lib/order/orderConfirm";
 import OrderConfirmBkash from "../../_lib/order/OrderConfirmBkash";
 import checkThreshold from "../../_lib/threshold/checkThreshold";
 import { useCartStore } from "../../store/cartStore";
 import useModalCartStore from "../../store/modalCartStore";
+
 function Checkout() {
   const { push } = useRouter();
   const [selectedArea, setSelectedArea] = useState(null);
@@ -30,6 +32,7 @@ function Checkout() {
   const [isValidCoupon, setIsValidCoupon] = useState(1);
   const { triggerCartUpdate } = useCartStore();
   const { cartUpdated, resetCartUpdate } = useModalCartStore();
+  const hasFiredCheckout = useRef(false); // ✅ Fix: declare the ref here
   const [isThreshold, setIsThreshold] = useState(false);
   const [isFreeShipping, setIsFreeShipping] = useState(false);
   const [isGift, setIsGift] = useState(false);
@@ -38,8 +41,7 @@ function Checkout() {
   const [paymentType, setPaymentType] = useState("cod");
   const [shippingCost, setShippingCost] = useState(0);
 
-  //state for unauthenticate user
-
+  // state for unauthenticated user
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -52,7 +54,7 @@ function Checkout() {
     setFormData((pre) => ({ ...pre, [field]: value }));
   };
 
-  //Checking user is authenticate or not
+  // Checking user is authenticated or not
   const token = Cookies.get("access_token");
 
   const handleSelection = (area) => {
@@ -79,6 +81,7 @@ function Checkout() {
       setIsFreeShipping(result.data?.free_shipping);
     }
   };
+
   useEffect(() => {
     if (cartUpdated || isCouponApply || isValidCoupon) {
       fetchCartData();
@@ -98,13 +101,40 @@ function Checkout() {
       ) {
         push("/");
       }
+
       setCouponData(result.data);
-      setCarts(result.data.products || []);
+      setCarts(result.data.products || []); // ✅ Fix: always set products
       setIsLoading(false);
 
-      //facebook pixel
+      // Facebook Pixel
       const products = result.data.products;
       initiateCheckout(products);
+
+      // ✅ GTM Begin Checkout — fires only ONCE
+      if (!hasFiredCheckout.current && products && products.length > 0) {
+        hasFiredCheckout.current = true;
+
+        const items = products.map((cart) => ({
+          id: String(cart.id),
+          name: cart.name,
+          price: cart.additional_stock_data.is_discount
+            ? Number(cart.additional_stock_data.discount_price)
+            : Number(cart.additional_stock_data.regular_price),
+          category: cart.category?.name || "Uncategorized",
+          quantity: cart.pivot.quantity,
+        }));
+
+        const total = items.reduce(
+          (sum, item) => sum + item.price * item.quantity,
+          0
+        );
+
+        trackBeginCheckout({
+          currency: "BDT",
+          total: total,
+          items: items,
+        });
+      }
 
       if (result.data.products.length < 1) {
         push("/");
@@ -146,26 +176,12 @@ function Checkout() {
     }, 0);
   };
 
-  // const grandTotal = () => {
-  //   if (isFreeShipping) {
-  //     shippingCost = 0;
-  //   } else {
-  //     shippingCost = shippingCost;
-  //   }
-  //   let total = subTotal() + shippingCost;
-  //   if (couponData.is_coupon) {
-  //     total = total - couponData.coupon_amount;
-  //   }
-  //   return total;
-  // };
-
   const grandTotal = () => {
     let cost = isFreeShipping ? 0 : shippingCost;
     let total = subTotal() + cost;
     if (couponData?.is_coupon) {
       total -= couponData.coupon_amount || 0;
     }
-
     return total;
   };
 
@@ -194,15 +210,29 @@ function Checkout() {
           });
           triggerCartUpdate();
 
-          //facebook pixel
-          orderData(result);
+          // Facebook Pixel
+          // Facebook Pixel
+            orderData(result);
 
-          localStorage.setItem(
-            "categorySlug",
-            JSON.stringify(result.data.slug)
-          );
+            // ✅ Save user data for GTM purchase event
+            localStorage.setItem("gtmUserData", JSON.stringify({
+              email: formData.email || undefined,
+              phone: formData.mobile || undefined,
+            }));
+
+            localStorage.setItem(
+              "categorySlug",
+              JSON.stringify(result.data.slug)
+            );
           push("/checkout/order-confirm");
-          // console.log(result);
+          // ✅ After
+const params = new URLSearchParams({
+  name: formData.name || "",   // ✅ Add this
+
+  email: formData.email || "",
+  phone: formData.mobile || "",
+});
+push(`/checkout/order-confirm?${params.toString()}`);
         } else {
           toast.error("Something went wrong");
         }
@@ -210,7 +240,7 @@ function Checkout() {
       if (paymentType == "bkash") {
         const result = await OrderConfirmBkash(formData);
         if (result.data.bkashURL) {
-          localStorage.setItem(
+          sessionStorage.setItem(
             "categorySlug",
             JSON.stringify(result.data.slug)
           );
@@ -239,11 +269,8 @@ function Checkout() {
     }
   };
 
-  //Threshold
-
   const checkIsThreshold = async () => {
     const result = await checkThreshold();
-    //console.log(result);
     if (result.success) {
       if (result.data.data) {
         if (result.data.opcode == 1) {
@@ -275,14 +302,6 @@ function Checkout() {
     }
   };
 
-  // const testOrder=async()=>{
-  //   const response = await OrderConfirmBkash(formData);
-  //   console.log(response);
-  //   if(response.data.bkashURL){
-  //     window.location.href = response.data.bkashURL;
-  //   }
-  // }
-
   return (
     <div>
       <main className="grid grid-cols-12 pt-5 gap-y-10 lg:gap-y-0 lg:gap-x-10">
@@ -302,9 +321,6 @@ function Checkout() {
           id="checkout-details"
           className="col-span-12 lg:col-span-5 px-2 lg:px-0"
         >
-          {/* <div className="shipping-charge">
-          <ShippingArea selectedArea={selectedArea} handleSelection={handleSelection}/>
-        </div> */}
           <div>
             <CheckoutForm formData={formData} onFormChange={handleFormChange} />
           </div>

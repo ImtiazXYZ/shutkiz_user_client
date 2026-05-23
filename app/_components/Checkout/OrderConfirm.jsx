@@ -5,7 +5,7 @@ import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { FaWhatsapp } from "react-icons/fa";
 import ReactPixel from "react-facebook-pixel";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 import AllProductSlider from "../Home/AllProductSlider";
 import Navbar from "../Navbar";
@@ -19,6 +19,7 @@ import { trackPurchase } from "../../_lib/gtm";
 
 function OrderConfirm() {
   const router = useRouter();
+  const searchParams = useSearchParams(); // ✅ Read URL params
 
   const [products, setProducts] = useState(null);
 
@@ -30,13 +31,14 @@ function OrderConfirm() {
     if (firedRef.current) return;
     firedRef.current = true;
 
-    const orderData = JSON.parse(
-      localStorage.getItem("pixelOrderData")
-    );
+    const orderData = JSON.parse(sessionStorage.getItem("pixelOrderData"));
+    const slug = JSON.parse(sessionStorage.getItem("categorySlug"));
 
-    const slug = JSON.parse(
-      localStorage.getItem("categorySlug")
-    );
+    // ✅ Read user data directly from URL params
+    const name = searchParams.get("name") || undefined;   // ✅ Add this
+
+    const email = searchParams.get("email") || undefined;
+    const phone = searchParams.get("phone") || undefined;
 
     /* =========================
        PURCHASE TRACKING
@@ -45,34 +47,41 @@ function OrderConfirm() {
       // ✅ FACEBOOK PIXEL PURCHASE
       ReactPixel.track("Purchase", orderData);
 
-      // ✅ GTM / GA4 PURCHASE EVENT
-      trackPurchase({
-        id: orderData.transaction_id || Date.now(),
-        total: orderData.value || 0,
-        currency: orderData.currency || "BDT",
+      // ✅ GTM / GA4 PURCHASE EVENT with user_data
+      trackPurchase(
+        {
+          id: orderData.transaction_id || Date.now(),
+          total: orderData.value || 0,
+          currency: orderData.currency || "BDT",
+          items:
+            orderData.contents?.map((item) => ({
+              id: item.id,
+              name: item.name,
+              category: item.category || "Uncategorized",
+              price: Number(item.price || item.item_price || 0),
+              quantity: item.quantity || 1,
+            })) || [],
+        },
+        {
+            name: name,    // ✅ Add this
 
-       items:
-        orderData.contents?.map((item) => ({
-          id: item.id,
-          name: item.name,
-          category: item.category || "Uncategorized",
-          price: Number(item.price || item.item_price || 0),
-          quantity: item.quantity || 1,
-        })) || [],
-      });
+          email: email, // ✅ from URL
+          phone: phone, // ✅ from URL
+        }
+      );
 
       console.log("✅ Purchase event fired");
 
-      // ✅ cleanup localStorage
-      localStorage.removeItem("pixelOrderData");
-      localStorage.removeItem("categorySlug");
+      // ✅ Cleanup localStorage
+      sessionStorage.removeItem("pixelOrderData");
+      sessionStorage.removeItem("categorySlug");
     }
 
     // ✅ suggested products
     if (slug) {
       getSuggestProduct(slug);
     }
-  }, []);
+  }, [searchParams]);
 
   /* =========================
      RELATED PRODUCTS

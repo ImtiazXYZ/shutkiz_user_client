@@ -76,17 +76,21 @@ export function orderData(result){
         .map((product) => product.name)
         .join(", ");
 
-        const contents = products.map((product) => {
-          const matchingStock = product.stocks.find(stock => stock.id === product.pivot.stock_id);
-          const stockToUse = matchingStock || product.stocks[0];
-      
-          return {
-              id: product.id,
-              quantity: product.pivot.quantity || 1,
-              price: stockToUse.is_discount ? stockToUse.discount_price : stockToUse.regular_price
-          };
-        });
-        localStorage.setItem("pixelOrderData", JSON.stringify({
+       const contents = products.map((product) => {
+        const matchingStock = product.stocks.find(stock => stock.id === product.pivot.stock_id);
+        const stockToUse = matchingStock || product.stocks[0];
+
+        return {
+          id: product.id,
+          name: product.name,                                    // ✅ Add
+          category: product.category?.name || "Uncategorized",  // ✅ Add
+          quantity: product.pivot.quantity || 1,
+          price: stockToUse.is_discount 
+            ? stockToUse.discount_price 
+            : stockToUse.regular_price,
+        };
+      });
+        sessionStorage.setItem("pixelOrderData", JSON.stringify({
           content_ids: contentIds,
           content_name: contentNames,
           content_category: categoryNames,

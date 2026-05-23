@@ -35,17 +35,9 @@ function Product({ id,img, name, price, category, url }) {
     // </main>
     <main className="group cursor-pointer">
 
-      <Link
+    <Link
   href={url}
   className="block"
-  onClick={() =>
-    trackSelectItem({
-      id,
-      name,
-      category,
-      price,
-    })
-  }
 >
         <div className="flex flex-col justify-between bg-white rounded-xl overflow-hidden shadow-[0_3px_10px_rgb(0,0,0,0.1)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.12)] transition-all duration-300">
           <div className="relative w-full aspect-square overflow-hidden bg-gray-100">

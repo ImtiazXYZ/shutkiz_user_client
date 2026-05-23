@@ -97,27 +97,10 @@ export default function ProductVariationTab({ stocks, productId }) {
       const price = stock.is_discount ? stock.discount_price : stock.regular_price;
       
       // ✅ Track Add to Cart first
-      trackAddToCart({
-        id: String(product.id),
-        name: product.name,
-        price: Number(price),
-        category: product.category?.name || "Uncategorized",
-        quantity: quantity,
-        currency: "BDT"
-      });
+      
       
       // ✅ Then track Begin Checkout
-      trackBeginCheckout({
-        currency: "BDT",
-        total: Number(price) * quantity,
-        items: [{
-          id: String(product.id),
-          name: product.name,
-          price: Number(price),
-          category: product.category?.name || "Uncategorized",
-          quantity: quantity
-        }]
-      });
+      
       
       console.log("✅ GTM Events tracked - Add to Cart & Begin Checkout");
       

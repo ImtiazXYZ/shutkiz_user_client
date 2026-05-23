@@ -83,6 +83,7 @@ export const trackPurchase = (order, user = {}) => {
     user_data: {
       user_id: user.id || undefined,
       email: user.email || undefined,
+      name: user.name || undefined,   // ✅ Add this
       phone: user.phone || undefined,
     },
   });
