@@ -4,80 +4,98 @@ import Link from "next/link";
 import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { FaWhatsapp } from "react-icons/fa";
-import ReactPixel from "react-facebook-pixel";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 
 import AllProductSlider from "../Home/AllProductSlider";
-import Navbar from "../Navbar";
-
 import orderConfrimImage from "../../../public/order-confirm.gif";
 
 import getCategoryProducts from "../../_lib/home/getCategoryProducts";
-
-// ✅ GTM PURCHASE TRACKER
 import { trackPurchase } from "../../_lib/gtm";
 
 function OrderConfirm() {
-  const router = useRouter();
-  const searchParams = useSearchParams(); // ✅ Read URL params
+  const searchParams = useSearchParams();
 
   const [products, setProducts] = useState(null);
 
-  // ✅ prevent duplicate firing in React Strict Mode
+  // ✅ prevent duplicate firing (Strict Mode safe)
   const firedRef = useRef(false);
 
   useEffect(() => {
-    // ✅ prevent duplicate purchase event
     if (firedRef.current) return;
     firedRef.current = true;
 
-    const orderData = JSON.parse(sessionStorage.getItem("pixelOrderData"));
-    const slug = JSON.parse(sessionStorage.getItem("categorySlug"));
+    /* =========================
+       SAFE DATA READ
+    ========================= */
 
-    // ✅ Read user data directly from URL params
-    const name = searchParams.get("name") || undefined;   // ✅ Add this
+    const orderInfoRaw = sessionStorage.getItem("orderInfo");
+    const orderItemsRaw = sessionStorage.getItem("orderItems");
+    const slug = sessionStorage.getItem("categorySlug");
 
+    let orderInfo = null;
+    let items = [];
+
+    try {
+      orderInfo = orderInfoRaw ? JSON.parse(orderInfoRaw) : null;
+    } catch (e) {
+      orderInfo = null;
+    }
+
+    // ✅ FIX: Parse items with proper error handling
+    try {
+      items = orderItemsRaw ? JSON.parse(orderItemsRaw) : [];
+    } catch (e) {
+      items = [];
+    }
+
+    const name = searchParams.get("name") || undefined;
     const email = searchParams.get("email") || undefined;
     const phone = searchParams.get("phone") || undefined;
 
     /* =========================
-       PURCHASE TRACKING
+       DEBUG LOG (remove in production)
     ========================= */
-    if (orderData) {
-      // ✅ FACEBOOK PIXEL PURCHASE
-      ReactPixel.track("Purchase", orderData);
+    console.log("📦 orderInfo:", orderInfo);
+    console.log("🛒 orderItems:", items);
 
-      // ✅ GTM / GA4 PURCHASE EVENT with user_data
-      trackPurchase(
-        {
-          id: orderData.transaction_id || Date.now(),
-          total: orderData.value || 0,
-          currency: orderData.currency || "BDT",
-          items:
-            orderData.contents?.map((item) => ({
-              id: item.id,
-              name: item.name,
-              category: item.category || "Uncategorized",
-              price: Number(item.price || item.item_price || 0),
-              quantity: item.quantity || 1,
-            })) || [],
-        },
-        {
-            name: name,    // ✅ Add this
+    /* =========================
+       GUARD CLAUSE
+    ========================= */
 
-          email: email, // ✅ from URL
-          phone: phone, // ✅ from URL
-        }
-      );
+    if (!orderInfo?.order_id) return;
 
-      console.log("✅ Purchase event fired");
+    /* =========================
+       PURCHASE TRACK EVENT
+    ========================= */
 
-      // ✅ Cleanup localStorage
-      sessionStorage.removeItem("pixelOrderData");
-      sessionStorage.removeItem("categorySlug");
-    }
+    trackPurchase(
+      {
+        id: orderInfo.order_id,
+        total: orderInfo.total || 0,
+        currency: orderInfo.currency || "BDT",
+        items: items, // ✅ FIX: pass the parsed items array (was hardcoded [])
+      },
+      {
+        name,
+        email,
+        phone,
+      }
+    );
 
-    // ✅ suggested products
+    console.log("✅ Purchase event fired (GTM) with", items.length, "items");
+
+    /* =========================
+       CLEANUP (PREVENT RE-FIRE)
+    ========================= */
+
+    sessionStorage.removeItem("orderInfo");
+    sessionStorage.removeItem("orderItems"); // ✅ FIX: also clean up orderItems
+    sessionStorage.removeItem("categorySlug");
+
+    /* =========================
+       RELATED PRODUCTS
+    ========================= */
+
     if (slug) {
       getSuggestProduct(slug);
     }
@@ -86,6 +104,7 @@ function OrderConfirm() {
   /* =========================
      RELATED PRODUCTS
   ========================= */
+
   async function getSuggestProduct(slug) {
     try {
       const response = await getCategoryProducts(slug);
@@ -97,8 +116,6 @@ function OrderConfirm() {
 
   return (
     <>
-      {/* <Navbar /> */}
-
       <div className="bg-white lg:py-6 flex justify-center">
         <div className="bg-white rounded-lg shadow-[0_3px_10px_rgb(0,0,0,0.2)] p-8 w-full max-w-xl text-center">
 
@@ -115,10 +132,10 @@ function OrderConfirm() {
           </h1>
 
           {/* ACTION BUTTONS */}
-          <div className="mt-10 flex flex-col lg:flex-row items-center justify-center gap-y-3 lg:gap-y-0 lg:gap-x-4">
+          <div className="mt-10 flex flex-col lg:flex-row items-center justify-center gap-3">
             <Link href="/">
               <button className="px-4 py-2 bg-black text-white font-semibold rounded-lg">
-                Continue Shopping...
+                Continue Shopping
               </button>
             </Link>
 
@@ -139,10 +156,10 @@ function OrderConfirm() {
               href="https://wa.me/8801788070149"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-2 px-6 py-3 bg-[#25D366] hover:bg-[#20BA5A] text-white font-semibold rounded-lg shadow-md hover:shadow-lg transition-all duration-200 transform hover:scale-105"
+              className="flex items-center gap-2 px-6 py-3 bg-[#25D366] text-white font-semibold rounded-lg"
             >
               <FaWhatsapp className="text-xl" />
-              <span>Chat on WhatsApp</span>
+              Chat on WhatsApp
             </a>
           </div>
         </div>

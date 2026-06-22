@@ -32,7 +32,7 @@ function Checkout() {
   const [isValidCoupon, setIsValidCoupon] = useState(1);
   const { triggerCartUpdate } = useCartStore();
   const { cartUpdated, resetCartUpdate } = useModalCartStore();
-  const hasFiredCheckout = useRef(false); // ✅ Fix: declare the ref here
+  const hasFiredCheckout = useRef(false);
   const [isThreshold, setIsThreshold] = useState(false);
   const [isFreeShipping, setIsFreeShipping] = useState(false);
   const [isGift, setIsGift] = useState(false);
@@ -41,7 +41,7 @@ function Checkout() {
   const [paymentType, setPaymentType] = useState("cod");
   const [shippingCost, setShippingCost] = useState(0);
 
-  // state for unauthenticated user
+  // State for unauthenticated user
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -103,14 +103,12 @@ function Checkout() {
       }
 
       setCouponData(result.data);
-      setCarts(result.data.products || []); // ✅ Fix: always set products
+      setCarts(result.data.products || []);
       setIsLoading(false);
 
-      // Facebook Pixel
       const products = result.data.products;
-      initiateCheckout(products);
 
-      // ✅ GTM Begin Checkout — fires only ONCE
+      // GTM Begin Checkout — fires only ONCE
       if (!hasFiredCheckout.current && products && products.length > 0) {
         hasFiredCheckout.current = true;
 
@@ -128,7 +126,6 @@ function Checkout() {
           (sum, item) => sum + item.price * item.quantity,
           0
         );
-
         trackBeginCheckout({
           currency: "BDT",
           total: total,
@@ -196,47 +193,103 @@ function Checkout() {
     ) {
       if (paymentType == "cod") {
         const result = await orderConfirm(formData);
+
         if (result.success) {
           customToast.success("Order successfully placed", {
             position: "top-right",
             autoClose: 2000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
             theme: "light",
             transition: Bounce,
           });
+
           triggerCartUpdate();
 
-          // Facebook Pixel
-          // Facebook Pixel
-            orderData(result);
+          /* =========================
+             BUILD ORDER ITEMS FROM CURRENT CART
+          ========================= */
 
-            // ✅ Save user data for GTM purchase event
-            localStorage.setItem("gtmUserData", JSON.stringify({
-              email: formData.email || undefined,
-              phone: formData.mobile || undefined,
+          // ✅ FIX: Build items from current `carts` state
+          // (result.data.products may not always be returned by all APIs)
+          const orderItems =
+            result.data?.products?.map((cart) => ({
+              id: String(cart.id),
+              name: cart.name,
+              price: cart.additional_stock_data.is_discount
+                ? Number(cart.additional_stock_data.discount_price)
+                : Number(cart.additional_stock_data.regular_price),
+              category: cart.category?.name || "Uncategorized",
+              quantity: cart.pivot.quantity,
+            })) ||
+            // ✅ FALLBACK: use current carts state if API doesn't return products
+            carts.map((cart) => ({
+              id: String(cart.id),
+              name: cart.name,
+              price: cart.additional_stock_data.is_discount
+                ? Number(cart.additional_stock_data.discount_price)
+                : Number(cart.additional_stock_data.regular_price),
+              category: cart.category?.name || "Uncategorized",
+              quantity: cart.pivot.quantity,
             }));
 
-            localStorage.setItem(
-              "categorySlug",
-              JSON.stringify(result.data.slug)
-            );
-          push("/checkout/order-confirm");
-          // ✅ After
-const params = new URLSearchParams({
-  name: formData.name || "",   // ✅ Add this
+          /* =========================
+             STORE ORDER INFO IN SESSION
+          ========================= */
 
-  email: formData.email || "",
-  phone: formData.mobile || "",
-});
-push(`/checkout/order-confirm?${params.toString()}`);
+          // ✅ FIX: Check multiple possible total field names from API
+          const orderTotal =
+            result.data?.total_amount ||
+            result.data?.grand_total ||
+            result.data?.total ||
+            grandTotal() || // ✅ FINAL FALLBACK: use locally calculated grandTotal
+            0;
+
+          sessionStorage.setItem(
+            "orderInfo",
+            JSON.stringify({
+              order_id: result.data?.order_id || null,
+              slug: result.data?.slug || null,
+              total: orderTotal,
+              currency: "BDT",
+            })
+          );
+
+          // ✅ FIX: Save items to sessionStorage so OrderConfirm can read them
+          sessionStorage.setItem("orderItems", JSON.stringify(orderItems));
+
+          // Store user data for GTM purchase event
+          localStorage.setItem(
+            "gtmUserData",
+            JSON.stringify({
+              email: formData.email || undefined,
+              phone: formData.mobile || undefined,
+            })
+          );
+
+          /* =========================
+             DEBUG LOG (remove in production)
+          ========================= */
+          console.log("✅ orderInfo saved:", {
+            order_id: result.data?.order_id,
+            total: orderTotal,
+          });
+          console.log("✅ orderItems saved:", orderItems);
+
+          /* =========================
+             REDIRECT TO CONFIRM PAGE
+          ========================= */
+
+          const params = new URLSearchParams({
+            name: formData.name || "",
+            email: formData.email || "",
+            phone: formData.mobile || "",
+          });
+
+          push(`/checkout/order-confirm?${params.toString()}`);
         } else {
           toast.error("Something went wrong");
         }
       }
+
       if (paymentType == "bkash") {
         const result = await OrderConfirmBkash(formData);
         if (result.data.bkashURL) {

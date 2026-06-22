@@ -7,7 +7,6 @@ import Cookies from "js-cookie";
 import toast, { Toaster } from 'react-hot-toast';
 import {useCartStore} from "../../store/cartStore";
 import { useRouter } from "next/navigation";
-import ReactPixel from "react-facebook-pixel";
 import { trackAddToCart, trackBeginCheckout } from "../../_lib/gtm"; // Add GTM imports
 
 export default function ProductVariationTab({ stocks, productId }) {
@@ -49,21 +48,6 @@ export default function ProductVariationTab({ stocks, productId }) {
       const product = result.data.product;
       const stock = product.stocks[0];
       
-      // Facebook Pixel tracking
-      ReactPixel.track("AddToCart", {
-        content_ids: product.id,
-        content_name: product.name,
-        content_type : 'product',
-        content_category : product.category.name,
-        subcategory_name : product.subcategory?.name,
-        value: stock.is_discount ? stock.discount_price : stock.regular_price,
-        currency: "BDT",
-        num_items : quantity,
-        custom_data: {
-          seller: "Shutkiz",
-          stock_status: stock.stock > 0 ? "In Stock" : "Out of Stock",
-        },
-      });
       
       // ✅ GTM Add to Cart tracking
       const price = stock.is_discount ? stock.discount_price : stock.regular_price;
